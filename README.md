@@ -1,124 +1,136 @@
-# Visual Storytelling Application
+# Image Transcription and Correction Application
 
-This repository contains a Visual Storytelling application that generates stories based on user-uploaded images and text prompts. The application uses a Flask backend with machine learning models (BLIP and LLaMA 2) to generate stories and a React frontend for the user interface.
-
-## Table of Contents
-- [Features](#features)
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
+This project is a full-stack web application that allows users to upload images containing handwritten or printed text, transcribe the text using Optical Character Recognition (OCR), and correct the transcribed text using a language model. The application features a React-based front-end with a Flask back-end, leveraging TrOCR for OCR and LLaMA-2 for text correction.
 
 ## Features
-- Upload an image and provide a text prompt to generate a unique story.
-- Display generated stories with a typewriter effect.
-- Summarize generated stories using a BART model.
-- Responsive and user-friendly interface.
-- Backend API for story generation and summarization.
 
-## Technologies
-- **Backend**:
-  - Python 3.8+
-  - Flask
-  - PyTorch
-  - Transformers (Hugging Face)
-  - LLaMA 2 (via llama_cpp)
-  - BLIP (for image captioning)
-  - BART (for text summarization)
-- **Frontend**:
-  - React
-  - JavaScript (- **Other**:
-  - Git
-  - GitHub
+- **Image Upload**: Upload images (PNG, JPG, JPEG) containing text.
+- **Text Transcription**: Extract text from images using the TrOCR model.
+- **Text Correction**: Correct OCR errors using the LLaMA-2 language model.
+- **Interactive UI**: Display transcribed and corrected text with an animated text reveal effect.
+- **Responsive Design**: Styled with a clean, modern interface using custom CSS.
+
+## Tech Stack
+
+### Front-End
+
+- **React**: For building the user interface.
+- **JavaScript (ES6+)**: For handling state and effects.
+- **CSS**: Custom styles for layout and animations.
+
+### Back-End
+
+- **Flask**: Python web framework for handling API requests.
+- **TrOCR**: Transformer-based OCR model (`microsoft/trocr-base-handwritten`) for text智博彩金币 (microgaming) OCR.
+- **LLaMA-2**: Language model for text correction (`llama-2-7b-chat`).
+- **OpenCV**: Image preprocessing.
+- **Pytesseract**: Initial text detection for word segmentation.
+- **PyTorch**: For running the TrOCR model.
+
+## Prerequisites
+
+- **Python 3.8+**
+- **Node.js 16+**
+- **CUDA-enabled GPU** (recommended for TrOCR inference)
+- **Model weights**:
+  - TrOCR model (`microsoft/trocr-base-handwritten`)
+  - LLaMA-2 model (`llama-2-7b-chat.Q4_K_M.gguf`)
+- **Dependencies**: Listed in `requirements.txt` (back-end) and `package.json` (front-end).
 
 ## Installation
 
-### Prerequisites
-- Python 3.8 or higher
-- Node.js and npm
-- Git
+### Back-End
 
-### Steps
-1. **Clone the Repository**:
+1. Clone the repository:
+
    ```bash
-   git clone https://github.com/your-username/visual-storytelling.git
-   cd visual-storytelling
+   git clone https://github.com/your-username/image-transcription-app.git
+   cd image-transcription-app/backend
+   ```
+2. Create a virtual environment and install dependencies:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+3. Download and place the TrOCR and LLaMA-2 model weights in the specified paths (update paths in `app.py` if needed).
+4. Run the Flask server:
+
+   ```bash
+   python app.py
    ```
 
-2. **Backend Setup**:
-   - Create a virtual environment and activate it:
-     ```bash
-     python -m venv venv
-     source venv/bin/activate  # On Windows: venv\Scripts\activate
-     ```
-   - Install backend dependencies:
-     ```bash
-     pip install -r backend/requirements.txt
-     ```
-   - Ensure the BLIP model is placed in `backend/model/blip-vist-finetuned`. You can download or fine-tune it from Hugging Face.
-   - The LLaMA 2 model (`llama-2-7b-chat.Q4_K_M.gguf`) will be downloaded automatically on the first run, or you can manually download it from [Hugging Face](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF).
+### Front-End
 
-3. **Frontend Setup**:
-   - Navigate to the frontend directory:
-     ```bash
-     cd frontend
-     ```
-   - Install frontend dependencies:
-     ```bash
-     npm install
-     ```
+1. Navigate to the front-end directory:
 
-4. **Environment Configuration**:
-   - Ensure the `uploads` folder exists in the `backend` directory or is created automatically by the application.
+   ```bash
+   cd ../frontend
+   ```
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+3. Start the React development server:
+
+   ```bash
+   npm start
+   ```
 
 ## Usage
 
-1. **Run the Backend**:
-   - From the `backend` directory, start the Flask server:
-     ```bash
-     python app.py
-     ```
-   - The backend will run on `http://localhost:5000`.
-
-2. **Run the Frontend**:
-   - From the `frontend` directory, start the React development server:
-     ```bash
-     npm start
-     ```
-   - The frontend will run on `http://localhost:3000`.
-
-3. **Access the Application**:
-   - Open `http://localhost:3000` in your browser.
-   - Upload an image, enter a prompt, and click "Generate Story" to create a story.
-   - Use the "Summarize" button to view a summarized version of the story.
+1. Open the front-end in a browser (default: `http://localhost:3000`).
+2. Click the upload area to select an image.
+3. Click "Transcribe" to process the image and display the transcribed text.
+4. If available, click "Post Process Text" to view the corrected text.
+5. Use "Upload Another Image" to start over.
 
 ## Project Structure
+
 ```
-visual-storytelling/
+image-transcription-app/
 ├── backend/
-│   ├── app.py              # Main Flask application
-│   ├── model/             # Directory for BLIP model
-│   ├── uploads/           # Directory for uploaded images
-│   ├── requirements.txt    # Backend dependencies
-│   └── llama-2-7b-chat.Q4_K_M.gguf  # LLaMA 2 model (downloaded)
+│   ├── app.py              # Flask application
+│   ├── requirements.txt    # Python dependencies
+│   ├── uploads/           # Temporary storage for uploaded images
+│   └── output/            # Temporary storage for processed word images
 ├── frontend/
 │   ├── src/
-│   │   └── VisualStorytelling.js  # Main React component
+│   │   └── ImageUpload.js # Main React component
 │   ├── public/            # Static assets
-│   ├── package.json        # Frontend dependencies
-│   └── README.md          # Frontend-specific readme (if any)
-└── README.md              # This file
+│   ├── package.json       # Node.js dependencies
+│   └── README.md          # This file
 ```
 
+## API Endpoints
+
+- **POST** `/transcribe`:
+  - Accepts a multipart form with an `image` field.
+  - Returns JSON with `transcribedText` and `correctedText`.
+
+## Limitations
+
+- Requires significant computational resources for TrOCR and LLaMA-2.
+- Model paths in `app.py` must be updated to match your local setup.
+- Only supports PNG, JPG, and JPEG image formats.
+- CORS is enabled for development; configure appropriately for production.
+
 ## Contributing
-Contributions are welcome! Please follow these steps:
+
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m 'Add your feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
+2. Create a feature branch (`git checkout -b feature/new-feature`).
+3. Commit changes (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/new-feature`).
 5. Open a Pull Request.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Acknowledgments
+
+- TrOCR by Microsoft.
+- LLaMA-2 by Meta AI.
+- Flask and React communities.
