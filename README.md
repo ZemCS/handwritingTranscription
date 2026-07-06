@@ -21,7 +21,7 @@ This project is a full-stack web application that allows users to upload images 
 ### Back-End
 
 - **Flask**: Python web framework for handling API requests.
-- **TrOCR**: Transformer-based OCR model (`microsoft/trocr-base-handwritten`) for text智博彩金币 (microgaming) OCR.
+- **TrOCR**: Transformer-based Optical Character Recognition (OCR) model (`microsoft/trocr-base-handwritten`) for handwritten text recognition.
 - **LLaMA-2**: Language model for text correction (`llama-2-7b-chat`).
 - **OpenCV**: Image preprocessing.
 - **Pytesseract**: Initial text detection for word segmentation.
